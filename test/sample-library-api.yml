@@ -1,0 +1,704 @@
+openapi: 3.0.0
+info:
+  title: Library Management System
+  version: 1.0.0
+  description: A simple library management system for books, authors, and borrowers.
+servers:
+  - url: http://localhost:4000/api
+    description: Local development server
+
+paths:
+  /books:
+    get:
+      summary: List all books
+      operationId: list_books
+      tags: [Books]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, borrowed, reserved]
+        - name: authorId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      summary: Add a new book
+      operationId: create_book
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookCreate'
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+  /books/{bookId}:
+    get:
+      summary: Get book by ID
+      operationId: get_book
+      tags: [Books]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Book details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    put:
+      summary: Update book
+      operationId: update_book
+      tags: [Books]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookUpdate'
+      responses:
+        '200':
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      summary: Remove book
+      operationId: delete_book
+      tags: [Books]
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Book deleted
+
+  /authors:
+    get:
+      summary: List all authors
+      operationId: list_authors
+      tags: [Authors]
+      responses:
+        '200':
+          description: List of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    post:
+      summary: Add a new author
+      operationId: create_author
+      tags: [Authors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorCreate'
+      responses:
+        '201':
+          description: Author created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+  /authors/{authorId}:
+    get:
+      summary: Get author by ID
+      operationId: get_author
+      tags: [Authors]
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Author details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    put:
+      summary: Update author
+      operationId: update_author
+      tags: [Authors]
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorUpdate'
+      responses:
+        '200':
+          description: Author updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    delete:
+      summary: Remove author
+      operationId: delete_author
+      tags: [Authors]
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Author deleted
+
+  /borrowers:
+    get:
+      summary: List all borrowers
+      operationId: list_borrowers
+      tags: [Borrowers]
+      responses:
+        '200':
+          description: List of borrowers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Borrower'
+    post:
+      summary: Register a new borrower
+      operationId: create_borrower
+      tags: [Borrowers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowerCreate'
+      responses:
+        '201':
+          description: Borrower registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Borrower'
+
+  /borrowers/{borrowerId}:
+    get:
+      summary: Get borrower by ID
+      operationId: get_borrower
+      tags: [Borrowers]
+      parameters:
+        - name: borrowerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Borrower details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Borrower'
+    put:
+      summary: Update borrower information
+      operationId: update_borrower
+      tags: [Borrowers]
+      parameters:
+        - name: borrowerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowerUpdate'
+      responses:
+        '200':
+          description: Borrower updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Borrower'
+    delete:
+      summary: Remove borrower
+      operationId: delete_borrower
+      tags: [Borrowers]
+      parameters:
+        - name: borrowerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Borrower deleted
+
+  /loans:
+    get:
+      summary: List all loans
+      operationId: list_loans
+      tags: [Loans]
+      parameters:
+        - name: borrowerId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: bookId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, returned, overdue]
+      responses:
+        '200':
+          description: List of loans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Loan'
+    post:
+      summary: Create a new loan (borrow a book)
+      operationId: create_loan
+      tags: [Loans]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanCreate'
+      responses:
+        '201':
+          description: Loan created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+
+  /loans/{loanId}:
+    get:
+      summary: Get loan by ID
+      operationId: get_loan
+      tags: [Loans]
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Loan details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+    patch:
+      summary: Return a book (update loan status)
+      operationId: return_book
+      tags: [Loans]
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                returnDate:
+                  type: string
+                  format: date-time
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: Book returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+        isbn:
+          type: string
+        authorId:
+          type: string
+          format: uuid
+        publishedYear:
+          type: integer
+          minimum: 1000
+          maximum: 2030
+        genre:
+          type: string
+        pages:
+          type: integer
+          minimum: 1
+        status:
+          type: string
+          enum: [available, borrowed, reserved, maintenance]
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    BookCreate:
+      type: object
+      required:
+        - title
+        - isbn
+        - authorId
+        - publishedYear
+      properties:
+        title:
+          type: string
+          minLength: 1
+        isbn:
+          type: string
+          pattern: '^[0-9-]{10,17}$'
+        authorId:
+          type: string
+          format: uuid
+        publishedYear:
+          type: integer
+          minimum: 1000
+          maximum: 2030
+        genre:
+          type: string
+        pages:
+          type: integer
+          minimum: 1
+        description:
+          type: string
+
+    BookUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        publishedYear:
+          type: integer
+          minimum: 1000
+          maximum: 2030
+        genre:
+          type: string
+        pages:
+          type: integer
+          minimum: 1
+        status:
+          type: string
+          enum: [available, borrowed, reserved, maintenance]
+        description:
+          type: string
+
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        nationality:
+          type: string
+        biography:
+          type: string
+        website:
+          type: string
+          format: uri
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    AuthorCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        dateOfBirth:
+          type: string
+          format: date
+        nationality:
+          type: string
+        biography:
+          type: string
+        website:
+          type: string
+          format: uri
+        email:
+          type: string
+          format: email
+
+    AuthorUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        nationality:
+          type: string
+        biography:
+          type: string
+        website:
+          type: string
+          format: uri
+        email:
+          type: string
+          format: email
+
+    Borrower:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        membershipNumber:
+          type: string
+          readOnly: true
+        membershipType:
+          type: string
+          enum: [standard, premium, student, senior]
+        registrationDate:
+          type: string
+          format: date-time
+          readOnly: true
+        isActive:
+          type: boolean
+        totalBooksLoaned:
+          type: integer
+          minimum: 0
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    BorrowerCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        membershipType:
+          type: string
+          enum: [standard, premium, student, senior]
+          default: standard
+
+    BorrowerUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        membershipType:
+          type: string
+          enum: [standard, premium, student, senior]
+        isActive:
+          type: boolean
+
+    Loan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        bookId:
+          type: string
+          format: uuid
+        borrowerId:
+          type: string
+          format: uuid
+        loanDate:
+          type: string
+          format: date-time
+          readOnly: true
+        dueDate:
+          type: string
+          format: date-time
+        returnDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [active, returned, overdue]
+          readOnly: true
+        renewalCount:
+          type: integer
+          minimum: 0
+          default: 0
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    LoanCreate:
+      type: object
+      required:
+        - bookId
+        - borrowerId
+        - dueDate
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        borrowerId:
+          type: string
+          format: uuid
+        dueDate:
+          type: string
+          format: date-time
+        notes:
+          type: string

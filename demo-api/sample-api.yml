@@ -1,0 +1,431 @@
+openapi: 3.0.0
+info:
+  title: Complex Sample API
+  version: 2.0.0
+  description: A more complex API with nested schemas, multiple resources, and varied endpoints.
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+
+paths:
+  /users:
+    get:
+      summary: List all users
+      operationId: list_users
+      tags: [Users]
+      responses:
+        '200':
+          description: A list of users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Create a new user
+      operationId: create_user
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserNew'
+      responses:
+        '201':
+          description: The user was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{userId}:
+    get:
+      summary: Get a user by ID
+      operationId: get_user
+      tags: [Users]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A single user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Update a user
+      operationId: update_user
+      tags: [Users]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: The updated user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Delete a user
+      operationId: delete_user
+      tags: [Users]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content.
+
+  /posts:
+    get:
+      summary: List all posts
+      operationId: list_posts
+      tags: [Posts]
+      responses:
+        '200':
+          description: A list of posts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Create a new post
+      operationId: create_post
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostNew'
+      responses:
+        '201':
+          description: The post was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+  /posts/{postId}:
+    get:
+      summary: Get a post by ID
+      operationId: get_post
+      tags: [Posts]
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A single post.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+    delete:
+      summary: Delete a post
+      operationId: delete_post
+      tags: [Posts]
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content.
+
+  /products:
+    get:
+      summary: List all products
+      operationId: list_products
+      tags: [Products]
+      responses:
+        '200':
+          description: A list of available products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Create a new product
+      operationId: create_product
+      tags: [Products]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductNew'
+      responses:
+        '201':
+          description: The product was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+  /products/{productId}:
+    get:
+      summary: Get a product by ID
+      operationId: get_product
+      tags: [Products]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A single product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      summary: Update a product
+      operationId: update_product
+      tags: [Products]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdate'
+      responses:
+        '200':
+          description: The updated product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      summary: Delete a product
+      operationId: delete_product
+      tags: [Products]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content.
+
+components:
+  schemas:
+    Base:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    User:
+      allOf:
+        - $ref: '#/components/schemas/Base'
+        - type: object
+          properties:
+            username:
+              type: string
+              example: john.doe
+            email:
+              type: string
+              format: email
+              example: john.doe@example.com
+            profile:
+              $ref: '#/components/schemas/UserProfile'
+
+    UserNew:
+      type: object
+      required:
+        - username
+        - email
+        - password
+        - firstName
+        - lastName
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    UserUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        bio:
+          type: string
+          example: Software developer and tech enthusiast.
+        avatarUrl:
+          type: string
+          format: uri
+          example: https://example.com/avatar.png
+
+    Post:
+      allOf:
+        - $ref: '#/components/schemas/Base'
+        - type: object
+          properties:
+            title:
+              type: string
+            content:
+              type: string
+            authorId:
+              type: string
+              format: uuid
+            publishedAt:
+              type: string
+              format: date-time
+
+    PostNew:
+      type: object
+      required:
+        - title
+        - content
+        - authorId
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+          format: uuid
+
+    Product:
+      allOf:
+        - $ref: '#/components/schemas/Base'
+        - type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            price:
+              type: number
+              format: float
+            sku:
+              type: string
+            category:
+              $ref: '#/components/schemas/Category'
+            tags:
+              type: array
+              items:
+                type: string
+
+    ProductNew:
+      type: object
+      required:
+        - name
+        - price
+        - sku
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        sku:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+            example: "new"
+
+    ProductUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: "Electronics"

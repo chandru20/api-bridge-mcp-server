@@ -1,0 +1,33 @@
+{
+  "name": "apibridge-mcp-server",
+  "version": "1.0.0",
+  "description": "An open-source Model Context Protocol server for API testing and validation.",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "apibridge": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test/workflow-generator.test.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "api-testing",
+    "development-tool",
+    "automation"
+  ],
+  "author": "Chandrashekar Ramalingam",
+  "license": "MIT-CE",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "axios": "^1.6.0",
+    "uuid": "^9.0.0",
+    "yaml": "^2.8.0",
+    "zod": "^3.22.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

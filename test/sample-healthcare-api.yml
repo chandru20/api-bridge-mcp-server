@@ -1,0 +1,965 @@
+openapi: 3.0.0
+info:
+  title: Healthcare Management API
+  version: 1.2.0
+  description: Healthcare management system for patients, doctors, and appointments.
+servers:
+  - url: https://api.healthcare.example.com/v1
+    description: Production server
+  - url: http://localhost:5000/api/v1
+    description: Development server
+
+paths:
+  /patients:
+    get:
+      summary: List all patients
+      operationId: list_patients
+      tags: [Patients]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, inactive, discharged]
+        - name: doctorId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of patients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+    post:
+      summary: Register a new patient
+      operationId: create_patient
+      tags: [Patients]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCreate'
+      responses:
+        '201':
+          description: Patient registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+
+  /patients/{patientId}:
+    get:
+      summary: Get patient by ID
+      operationId: get_patient
+      tags: [Patients]
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Patient details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+    put:
+      summary: Update patient information
+      operationId: update_patient
+      tags: [Patients]
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientUpdate'
+      responses:
+        '200':
+          description: Patient updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+    delete:
+      summary: Archive patient record
+      operationId: delete_patient
+      tags: [Patients]
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Patient archived
+
+  /doctors:
+    get:
+      summary: List all doctors
+      operationId: list_doctors
+      tags: [Doctors]
+      parameters:
+        - name: specialization
+          in: query
+          schema:
+            type: string
+        - name: available
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: List of doctors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+    post:
+      summary: Add a new doctor
+      operationId: create_doctor
+      tags: [Doctors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorCreate'
+      responses:
+        '201':
+          description: Doctor added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+
+  /doctors/{doctorId}:
+    get:
+      summary: Get doctor by ID
+      operationId: get_doctor
+      tags: [Doctors]
+      parameters:
+        - name: doctorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Doctor details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+    put:
+      summary: Update doctor information
+      operationId: update_doctor
+      tags: [Doctors]
+      parameters:
+        - name: doctorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorUpdate'
+      responses:
+        '200':
+          description: Doctor updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+
+  /appointments:
+    get:
+      summary: List all appointments
+      operationId: list_appointments
+      tags: [Appointments]
+      parameters:
+        - name: patientId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: doctorId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [scheduled, completed, cancelled, no-show]
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+    post:
+      summary: Schedule a new appointment
+      operationId: create_appointment
+      tags: [Appointments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentCreate'
+      responses:
+        '201':
+          description: Appointment scheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+
+  /appointments/{appointmentId}:
+    get:
+      summary: Get appointment by ID
+      operationId: get_appointment
+      tags: [Appointments]
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Appointment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+    patch:
+      summary: Update appointment status
+      operationId: update_appointment_status
+      tags: [Appointments]
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [scheduled, completed, cancelled, no-show]
+                notes:
+                  type: string
+                duration:
+                  type: integer
+                  minimum: 1
+      responses:
+        '200':
+          description: Appointment status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+    delete:
+      summary: Cancel appointment
+      operationId: delete_appointment
+      tags: [Appointments]
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Appointment cancelled
+
+  /medical-records:
+    get:
+      summary: List medical records
+      operationId: list_medical_records
+      tags: [MedicalRecords]
+      parameters:
+        - name: patientId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: doctorId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: recordType
+          in: query
+          schema:
+            type: string
+            enum: [diagnosis, prescription, lab-result, imaging]
+      responses:
+        '200':
+          description: List of medical records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MedicalRecord'
+    post:
+      summary: Create a new medical record
+      operationId: create_medical_record
+      tags: [MedicalRecords]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRecordCreate'
+      responses:
+        '201':
+          description: Medical record created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecord'
+
+  /medical-records/{recordId}:
+    get:
+      summary: Get medical record by ID
+      operationId: get_medical_record
+      tags: [MedicalRecords]
+      parameters:
+        - name: recordId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Medical record details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecord'
+    put:
+      summary: Update medical record
+      operationId: update_medical_record
+      tags: [MedicalRecords]
+      parameters:
+        - name: recordId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRecordUpdate'
+      responses:
+        '200':
+          description: Medical record updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecord'
+
+components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          type: string
+          enum: [male, female, other, prefer-not-to-say]
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        emergencyContact:
+          $ref: '#/components/schemas/EmergencyContact'
+        insuranceInfo:
+          $ref: '#/components/schemas/InsuranceInfo'
+        medicalHistory:
+          type: array
+          items:
+            type: string
+        allergies:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [active, inactive, discharged]
+        registrationDate:
+          type: string
+          format: date-time
+          readOnly: true
+        lastVisit:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    PatientCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - dateOfBirth
+        - gender
+        - email
+        - phone
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          type: string
+          enum: [male, female, other, prefer-not-to-say]
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        emergencyContact:
+          $ref: '#/components/schemas/EmergencyContact'
+        insuranceInfo:
+          $ref: '#/components/schemas/InsuranceInfo'
+        medicalHistory:
+          type: array
+          items:
+            type: string
+        allergies:
+          type: array
+          items:
+            type: string
+
+    PatientUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        emergencyContact:
+          $ref: '#/components/schemas/EmergencyContact'
+        insuranceInfo:
+          $ref: '#/components/schemas/InsuranceInfo'
+        medicalHistory:
+          type: array
+          items:
+            type: string
+        allergies:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [active, inactive, discharged]
+
+    Doctor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        specialization:
+          type: string
+        licenseNumber:
+          type: string
+        department:
+          type: string
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+        education:
+          type: array
+          items:
+            type: string
+        schedule:
+          $ref: '#/components/schemas/DoctorSchedule'
+        isAvailable:
+          type: boolean
+        consultationFee:
+          type: number
+          format: float
+          minimum: 0
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+        totalPatients:
+          type: integer
+          minimum: 0
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    DoctorCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - specialization
+        - licenseNumber
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        specialization:
+          type: string
+          minLength: 1
+        licenseNumber:
+          type: string
+          minLength: 1
+        department:
+          type: string
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+        education:
+          type: array
+          items:
+            type: string
+        consultationFee:
+          type: number
+          format: float
+          minimum: 0
+
+    DoctorUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        department:
+          type: string
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+        education:
+          type: array
+          items:
+            type: string
+        schedule:
+          $ref: '#/components/schemas/DoctorSchedule'
+        isAvailable:
+          type: boolean
+        consultationFee:
+          type: number
+          format: float
+          minimum: 0
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        patientId:
+          type: string
+          format: uuid
+        doctorId:
+          type: string
+          format: uuid
+        appointmentDate:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          minimum: 15
+          default: 30
+        type:
+          type: string
+          enum: [consultation, follow-up, emergency, routine-checkup]
+        status:
+          type: string
+          enum: [scheduled, completed, cancelled, no-show]
+        reason:
+          type: string
+        notes:
+          type: string
+        symptoms:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    AppointmentCreate:
+      type: object
+      required:
+        - patientId
+        - doctorId
+        - appointmentDate
+        - type
+        - reason
+      properties:
+        patientId:
+          type: string
+          format: uuid
+        doctorId:
+          type: string
+          format: uuid
+        appointmentDate:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          minimum: 15
+          default: 30
+        type:
+          type: string
+          enum: [consultation, follow-up, emergency, routine-checkup]
+        reason:
+          type: string
+          minLength: 1
+        symptoms:
+          type: array
+          items:
+            type: string
+
+    MedicalRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        patientId:
+          type: string
+          format: uuid
+        doctorId:
+          type: string
+          format: uuid
+        appointmentId:
+          type: string
+          format: uuid
+        recordType:
+          type: string
+          enum: [diagnosis, prescription, lab-result, imaging, treatment-plan]
+        title:
+          type: string
+        description:
+          type: string
+        findings:
+          type: string
+        recommendations:
+          type: string
+        medications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medication'
+        labResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabResult'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+        isConfidential:
+          type: boolean
+          default: false
+        recordDate:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+
+    MedicalRecordCreate:
+      type: object
+      required:
+        - patientId
+        - doctorId
+        - recordType
+        - title
+        - description
+      properties:
+        patientId:
+          type: string
+          format: uuid
+        doctorId:
+          type: string
+          format: uuid
+        appointmentId:
+          type: string
+          format: uuid
+        recordType:
+          type: string
+          enum: [diagnosis, prescription, lab-result, imaging, treatment-plan]
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        findings:
+          type: string
+        recommendations:
+          type: string
+        medications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medication'
+        labResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabResult'
+        isConfidential:
+          type: boolean
+          default: false
+        recordDate:
+          type: string
+          format: date-time
+
+    MedicalRecordUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        findings:
+          type: string
+        recommendations:
+          type: string
+        medications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medication'
+        labResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabResult'
+        isConfidential:
+          type: boolean
+
+    EmergencyContact:
+      type: object
+      properties:
+        name:
+          type: string
+        relationship:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+
+    InsuranceInfo:
+      type: object
+      properties:
+        provider:
+          type: string
+        policyNumber:
+          type: string
+        groupNumber:
+          type: string
+        expiryDate:
+          type: string
+          format: date
+
+    DoctorSchedule:
+      type: object
+      properties:
+        monday:
+          $ref: '#/components/schemas/TimeSlots'
+        tuesday:
+          $ref: '#/components/schemas/TimeSlots'
+        wednesday:
+          $ref: '#/components/schemas/TimeSlots'
+        thursday:
+          $ref: '#/components/schemas/TimeSlots'
+        friday:
+          $ref: '#/components/schemas/TimeSlots'
+        saturday:
+          $ref: '#/components/schemas/TimeSlots'
+        sunday:
+          $ref: '#/components/schemas/TimeSlots'
+
+    TimeSlots:
+      type: object
+      properties:
+        startTime:
+          type: string
+          format: time
+        endTime:
+          type: string
+          format: time
+        isAvailable:
+          type: boolean
+
+    Medication:
+      type: object
+      properties:
+        name:
+          type: string
+        dosage:
+          type: string
+        frequency:
+          type: string
+        duration:
+          type: string
+        instructions:
+          type: string
+
+    LabResult:
+      type: object
+      properties:
+        testName:
+          type: string
+        result:
+          type: string
+        normalRange:
+          type: string
+        unit:
+          type: string
+        status:
+          type: string
+          enum: [normal, abnormal, critical]
+
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fileName:
+          type: string
+        fileType:
+          type: string
+        fileSize:
+          type: integer
+        url:
+          type: string
+          format: uri
+        uploadDate:
+          type: string
+          format: date-time

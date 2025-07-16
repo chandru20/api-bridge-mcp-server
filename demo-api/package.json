@@ -1,0 +1,25 @@
+{
+  "name": "apibridge-demo-api",
+  "version": "1.0.0",
+  "description": "Demo API server for APIBridge MCP Server demonstration",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  },
+  "keywords": [
+    "demo-api",
+    "api",
+    "express",
+    "demo"
+  ],
+  "author": "APIBridge Team",
+  "license": "MIT"
+}

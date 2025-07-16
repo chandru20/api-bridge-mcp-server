@@ -1,0 +1,12 @@
+{
+  "name": "APIBridge Demo MCP Server",
+  "version": "1.0.0",
+  "apiBaseUrl": "http://localhost:3000/api",
+  "openApiFile": "demo-api/sample-api.yml",
+  "timeout": 10000,
+  "retryAttempts": 3,
+  "enableLogging": true,
+  "enableMetrics": true,
+  "endpoints": {},
+  "workflows": {}
+}
