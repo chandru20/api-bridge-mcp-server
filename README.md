@@ -1,6 +1,6 @@
 # APIBridge MCP Server
 
-[![License: MIT](https://img.shields.io/badge/License-startad%20MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 
 An open-source Model Context Protocol server for dynamic API testing and validation powered by OpenAPI specifications.
