@@ -1,4 +1,4 @@
-MIT License with Commercial Enterprise Addendum
+MIT License
 
 Copyright (c) 2025 Chandrashekar Ramalingam
 
@@ -12,71 +12,10 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-COMMERCIAL ENTERPRISE ADDENDUM:
-
-For the purposes of this license, a "Commercial Enterprise" is defined as any
-entity that meets ONE OR MORE of the following criteria:
-
-1. Has annual revenue exceeding $10 million USD (or equivalent in other currencies)
-2. Has more than 500 employees
-3. Is publicly traded on any stock exchange
-4. Is a subsidiary of, or is controlled by, an entity meeting any of the above criteria
-
-COMMERCIAL ENTERPRISE LICENSE REQUIREMENT:
-
-If you are a Commercial Enterprise as defined above, you must obtain a separate
-commercial license from the copyright holder before using this Software in any
-capacity. This includes but is not limited to:
-
-- Using the Software in production environments
-- Distributing the Software as part of your products or services
-- Modifying the Software for internal use
-- Using the Software for evaluation or testing purposes
-
-To obtain a commercial license, please contact: chandru20.shekar@gmail.com
-
-NON-COMMERCIAL ENTERPRISE USAGE:
-
-Entities that do not meet the Commercial Enterprise criteria above may use this
-Software under the standard MIT license terms without additional restrictions.
-
-TRADEMARKS:
-
-This license does not grant you rights to use the copyright holder's name,
-logo, or trademarks.
-
-DISCLAIMER AND LIMITATION OF LIABILITY:
-
-1. Disclaimer of Warranty. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY
-OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
-2. Limitation of Liability. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THIS INCLUDES, BUT IS
-NOT LIMITED TO, DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-
-3. Indemnification. You agree to indemnify and hold harmless the authors and
-copyright holders from and against any and all claims, damages, losses,
-liabilities, costs, and expenses (including reasonable attorneys' fees)
-arising out of or in connection with your use, modification, or distribution
-of the Software, or your breach of this license.
-
-ENFORCEMENT:
-
-Any Commercial Enterprise found to be using this Software without a proper
-commercial license will be required to:
-
-1. Immediately cease all use of the Software
-2. Pay retroactive licensing fees
-3. May be subject to legal action for copyright infringement
-
-The determination of whether an entity qualifies as a Commercial Enterprise
-shall be made based on the entity's status at the time of first use of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
